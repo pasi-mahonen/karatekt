@@ -24,6 +24,8 @@ Scenario: create a task with JSON payload read from file
   # Define variables first, then inject them into the JSON template via read().
   * def title = 'KT payload task'
   * def description = 'Create payload loaded from a JSON file'
+  * def priority = 'URGENT'
+  * def dueDate = '2026-04-25'
   * def payload = read('classpath:examples/payloads/create-task.json')
 
   # Submit the externalized payload instead of inline JSON.
@@ -36,3 +38,5 @@ Scenario: create a task with JSON payload read from file
   And match response.title == title
   And match response.description == description
   And match response.status == payload.status
+  And match response.priority == priority
+  And match response.dueDate == dueDate

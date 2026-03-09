@@ -29,6 +29,8 @@ Scenario: create a task from the qa row flagged to run
   # Map the selected row into the payload variables.
   * def title = selected.title
   * def description = selected.description
+  * def priority = selected.priority
+  * def dueDate = selected.dueDate
   * def payload = read('classpath:examples/payloads/create-task.json')
 
   # Send the request built from external CSV data plus external JSON payload.
@@ -41,3 +43,5 @@ Scenario: create a task from the qa row flagged to run
   And match response.title == title
   And match response.description == description
   And match response.status == 'TODO'
+  And match response.priority == priority
+  And match response.dueDate == dueDate

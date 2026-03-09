@@ -28,7 +28,8 @@ Scenario: authenticate and create a task with everything inline
       "title": "KT basic task",
       "description": "Created with inline JSON payload",
       "status": "TODO",
-      "priority": "MEDIUM"
+      "priority": "MEDIUM",
+      "dueDate": "2026-04-10"
     }
     """
   When method post
@@ -38,3 +39,7 @@ Scenario: authenticate and create a task with everything inline
   And match response.title == 'KT basic task'
   And match response.description == 'Created with inline JSON payload'
   And match response.status == 'TODO'
+  And match response.priority == 'MEDIUM'
+  And match response.dueDate == '2026-04-10'
+  And match response.createdAt == '#string'
+  And match response.updatedAt == '#string'

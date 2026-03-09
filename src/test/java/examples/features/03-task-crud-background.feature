@@ -30,7 +30,8 @@ Scenario: create a task with auth already prepared in the background
       "title": "KT background task",
       "description": "Background keeps the scenario focused on create",
       "status": "TODO",
-      "priority": "MEDIUM"
+      "priority": "MEDIUM",
+      "dueDate": "2026-04-20"
     }
     """
   When method post
@@ -40,3 +41,5 @@ Scenario: create a task with auth already prepared in the background
   And match response.title == 'KT background task'
   And match response.description == 'Background keeps the scenario focused on create'
   And match response.status == 'TODO'
+  And match response.priority == 'MEDIUM'
+  And match response.dueDate == '2026-04-20'

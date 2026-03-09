@@ -3,8 +3,8 @@
 Feature: authenticate and return bearer token
 
 Scenario:
-  * def username = __arg.username
-  * def password = __arg.password
+  * match username == '#string'
+  * match password == '#string'
   Given url baseUrl + authPath
   And request
     """

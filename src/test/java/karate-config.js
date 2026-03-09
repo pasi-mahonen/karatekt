@@ -11,8 +11,8 @@ function fn() {
     authPath: '/api/v2/auth/login',
     tasksPath: '/api/v2/tasks',
     credentials: {
-      username: 'user',
-      password: 'user123'
+      username: 'testuser',
+      password: 'test123'
     }
   }
   if (env == 'dev') {

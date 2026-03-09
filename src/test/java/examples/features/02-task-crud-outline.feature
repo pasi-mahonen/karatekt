@@ -28,7 +28,8 @@ Scenario Outline: authenticate and create a task with example-driven values
       "title": "<title>",
       "description": "<description>",
       "status": "TODO",
-      "priority": "MEDIUM"
+      "priority": "<priority>",
+      "dueDate": "<dueDate>"
     }
     """
   When method post
@@ -38,9 +39,11 @@ Scenario Outline: authenticate and create a task with example-driven values
   And match response.title == '<title>'
   And match response.description == '<description>'
   And match response.status == 'TODO'
+  And match response.priority == '<priority>'
+  And match response.dueDate == '<dueDate>'
 
 Examples:
   # Each row becomes a separate execution of the same scenario steps.
-  | title                  | description                          |
-  | KT outline task one    | Created from the first outline row   |
-  | KT outline task two    | Created from the second outline row  |
+  | title                  | description                          | priority | dueDate    |
+  | KT outline task one    | Created from the first outline row   | MEDIUM   | 2026-04-12 |
+  | KT outline task two    | Created from the second outline row  | HIGH     | 2026-04-18 |

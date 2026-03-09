@@ -2,5 +2,6 @@
   "title": "#(title)",
   "description": "#(description)",
   "status": "#(status)",
-  "priority": "HIGH"
+  "priority": "#(priority)",
+  "dueDate": "#(dueDate)"
 }
