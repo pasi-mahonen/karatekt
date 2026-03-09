@@ -1,0 +1,4 @@
+env,run,title,description
+qa,true,KT csv task,Task created from qa CSV row
+qa,false,KT skipped task,This row should be ignored
+dev,true,KT dev task,This row is for dev only

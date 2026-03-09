@@ -50,6 +50,9 @@
                 <version>${maven.surefire.version}</version>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <systemPropertyVariables>
+                        <karate.options>${karate.options}</karate.options>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>          
         </plugins>        
