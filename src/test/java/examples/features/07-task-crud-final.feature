@@ -1,5 +1,5 @@
 # KT Part G
-# Concepts demonstrated: callonce helper auth, reusable verification helper, JSON payloads, CSV data, Java utils, and full CRUD
+# Concepts demonstrated: callonce helper auth, reusable verification helper, JSON payloads, dynamic CSV examples, Java utils, and full CRUD
 @part-g
 @kt-final
 Feature: task CRUD final reusable framework example
@@ -12,19 +12,26 @@ Background:
   * def authResult = callonce read('classpath:examples/helpers/auth.feature') authArgs
   * def authToken = authResult.authToken
   * configure headers = { Authorization: '#("Bearer " + authToken)' }
-  # Prepare reusable CSV-driven seed data for the scenario outline.
-  * def rows = read('classpath:examples/data/tasks.csv')
-  * def filteredRows = karate.filter(rows, function(row){ return row.env == 'qa' && row.run == 'true'; })
-  * match filteredRows == '#[1]'
-  * def selected = filteredRows[0]
 
-Scenario Outline: create read update and delete a task with reusable helpers
-  # Build unique create data from CSV plus a Java-generated suffix.
+@setup=qa
+Scenario: prepare qa task rows with update values
+  * def rows = read('classpath:examples/data/tasks.csv')
+  * def rows = karate.filter(rows, function(row){ return row.env == 'qa' && row.run == 'true'; })
+  * def rows = karate.map(rows, function(row){ return { env: row.env, title: row.title, description: row.description, priority: row.priority, dueDate: row.dueDate, status: 'IN_PROGRESS', updatePriority: 'HIGH', updateDueDate: '2026-05-05' }; })
+
+@setup=dev
+Scenario: prepare dev task rows with update values
+  * def rows = read('classpath:examples/data/tasks.csv')
+  * def rows = karate.filter(rows, function(row){ return row.env == 'dev' && row.run == 'true'; })
+  * def rows = karate.map(rows, function(row){ return { env: row.env, title: row.title, description: row.description, priority: row.priority, dueDate: row.dueDate, status: 'DONE', updatePriority: 'URGENT', updateDueDate: '2026-05-10' }; })
+
+Scenario Outline: create read update and delete a task with reusable helpers for <env> - <title>
+  # Build unique create data from CSV-backed example values plus a Java-generated suffix.
   * def suffix = RandomDataUtil.randomAlpha(5)
-  * def createTitle = selected.title + ' ' + suffix
-  * def createDescription = selected.description + ' ' + suffix
-  * def createPriority = selected.priority
-  * def createDueDate = selected.dueDate
+  * def createTitle = '<title>' + ' ' + suffix
+  * def createDescription = '<description>' + ' ' + suffix
+  * def createPriority = '<priority>'
+  * def createDueDate = '<dueDate>'
   * def title = createTitle
   * def description = createDescription
   * def priority = createPriority
@@ -52,8 +59,8 @@ Scenario Outline: create read update and delete a task with reusable helpers
   * def updateTitle = createTitle + ' updated'
   * def updateDescription = 'Updated description for ' + suffix
   * def status = '<status>'
-  * def priority = '<priority>'
-  * def dueDate = '<dueDate>'
+  * def priority = '<updatePriority>'
+  * def dueDate = '<updateDueDate>'
   * def title = updateTitle
   * def description = updateDescription
   * def updatePayload = read('classpath:examples/payloads/update-task.json')
@@ -84,8 +91,12 @@ Scenario Outline: create read update and delete a task with reusable helpers
   When method get
   Then status 404
 
+@qa
 Examples:
-  # Each row demonstrates a different update state in the same reusable CRUD flow.
-  | status      | priority | dueDate    |
-  | IN_PROGRESS | HIGH     | 2026-05-05 |
-  | DONE        | URGENT   | 2026-05-10 |
+  # Load qa CSV rows merged with update fields from the named setup scenario.
+  | karate.setup('qa').rows |
+
+@dev
+Examples:
+  # Load dev CSV rows merged with update fields from the named setup scenario.
+  | karate.setup('dev').rows |

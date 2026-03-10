@@ -1,5 +1,5 @@
 # KT Part E
-# Concepts demonstrated: CSV data loading and row filtering
+# Concepts demonstrated: filtered CSV data source in dynamic Scenario Outline examples
 @part-e
 @kt-csv-data
 Feature: task CRUD create using CSV-driven data
@@ -20,17 +20,12 @@ Background:
   * def authToken = response.token
   * configure headers = { Authorization: '#("Bearer " + authToken)' }
 
-Scenario: create a task from the qa row flagged to run
-  # Read all CSV rows, then filter to the one intended for this environment and run flag.
-  * def rows = read('classpath:examples/data/tasks.csv')
-  * def filtered = karate.filter(rows, function(row){ return row.env == 'qa' && row.run == 'true'; })
-  * match filtered == '#[1]'
-  * def selected = filtered[0]
-  # Map the selected row into the payload variables.
-  * def title = selected.title
-  * def description = selected.description
-  * def priority = selected.priority
-  * def dueDate = selected.dueDate
+Scenario Outline: create a task from CSV row for <env> - <title>
+  # The placeholders come directly from CSV rows filtered in the Examples table.
+  * def title = '<title>'
+  * def description = '<description>'
+  * def priority = '<priority>'
+  * def dueDate = '<dueDate>'
   * def payload = read('classpath:examples/payloads/create-task.json')
 
   # Send the request built from external CSV data plus external JSON payload.
@@ -45,3 +40,13 @@ Scenario: create a task from the qa row flagged to run
   And match response.status == 'TODO'
   And match response.priority == priority
   And match response.dueDate == dueDate
+
+@qa
+Examples:
+  # Load runnable qa rows directly from the CSV file.
+  | read('classpath:examples/data/tasks.csv').filter(function(row){ return row.env == 'qa' && row.run == 'true'; }) |
+
+@dev
+Examples:
+  # Load runnable dev rows directly from the CSV file.
+  | read('classpath:examples/data/tasks.csv').filter(function(row){ return row.env == 'dev' && row.run == 'true'; }) |

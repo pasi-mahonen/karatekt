@@ -2,3 +2,4 @@ env,run,title,description,priority,dueDate
 qa,true,KT csv task,Task created from qa CSV row,HIGH,2026-04-15
 qa,false,KT skipped task,This row should be ignored,LOW,2026-05-01
 dev,true,KT dev task,This row is for dev only,MEDIUM,2026-06-01
+qa,true,KT csv task,Task created from qa CSV row test,HIGH,2026-04-15
