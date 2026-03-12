@@ -2,11 +2,17 @@
 
 This repository contains a Karate knowledge-transfer flow that implements the same task API business flow 7 different ways, from the most direct example to a more reusable CRUD-style test design.
 
+It also includes a dedicated v1 public API CRUD example that uses scenario outlines plus external JSON payload templates.
+
 ## Task API Spec
 
 The KT targets the authenticated Task API exposed here:
 
 - [Swagger UI - V2 Authenticated API (JWT)](https://api.testauto.app/swagger-ui/index.html?urls.primaryName=V2%20-%20Authenticated%20API%20(JWT))
+
+Additional example for the public v1 API:
+
+- [Swagger UI - V1 Simple API](https://api.testauto.app/api-docs/1-v1-api)
 
 ## KT Structure
 
@@ -40,6 +46,12 @@ Run the whole KT suite with the dedicated runner:
 mvn test -Dtest=KtRunner
 ```
 
+Run the dedicated v1 CRUD example by tag:
+
+```powershell
+mvn test -Dtest=KtRunner "-Dkarate.options=--tags @part-h"
+```
+
 ## Run One KT File By Tag
 
 Each KT feature has a unique part tag so you can run them one by one from Maven on Windows PowerShell.
@@ -60,6 +72,7 @@ mvn test -Dtest=KtRunner "-Dkarate.options=--tags @part-d"
 mvn test -Dtest=KtRunner "-Dkarate.options=--tags @part-e"
 mvn test -Dtest=KtRunner "-Dkarate.options=--tags @part-f"
 mvn test -Dtest=KtRunner "-Dkarate.options=--tags @part-g"
+mvn test -Dtest=KtRunner "-Dkarate.options=--tags @part-h"
 ```
 
 You can also run the earlier sample feature by tag:
